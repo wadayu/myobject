@@ -49,6 +49,9 @@
                                 </div>
                             </div>
                         </div>
+                        <a href="{% url 'user:mymessage' %}">
+                            <div class="msg-num"> <span id="MsgNum">{{ request.user.unread_message }}</span></div>
+                        </a>
                     {% else %}
                         <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
                         <a style="color:white" class="fr loginbtn" href='{% url 'login' %}'>登录</a>
@@ -86,11 +89,11 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="{% url 'user:user_info' %}">个人资料</a></li>
-            <li ><a href="{% url 'user:mycourses' %}">我的课程</a></li>
-            <li ><a href="{% url 'user:myfav_org' %}">我的收藏</a></li>
-            <li >
-                <a href="usercenter-message.html" style="position: relative;">
+            <li class="{% ifequal click_page 'userinfo' %}active2{% endifequal %}"><a href="{% url 'user:user_info' %}">个人资料</a></li>
+            <li class="{% ifequal click_page 'course' %}active2{% endifequal %}"><a href="{% url 'user:mycourses' %}">我的课程</a></li>
+            <li class="{% ifequal click_page 'myfav' %}active2{% endifequal %}"><a href="{% url 'user:myfav_org' %}">我的收藏</a></li>
+            <li class="{% ifequal click_page 'message' %}active2{% endifequal %}">
+                <a href="{% url 'user:mymessage' %}" style="position: relative;">
                     我的消息
                 </a>
             </li>

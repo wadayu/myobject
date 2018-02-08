@@ -6,6 +6,7 @@ from django.conf.urls import url,include
 
 from .views import UserInfoView,UploadImageView,UpdatePwdView,SendEmailCodeView
 from .views import UpdateEmailView,MyCoursesView,MyFavOrgView,MyFavTeacherView,MyFavCourseView
+from .views import MyMessageView
 
 urlpatterns = [
     url(r'^user_info/$',UserInfoView.as_view(),name='user_info'),
@@ -17,4 +18,5 @@ urlpatterns = [
     url(r'^myfav/org/$', MyFavOrgView.as_view(), name='myfav_org'),
     url(r'^myfav/teacher/$', MyFavTeacherView.as_view(), name='myfav_teacher'),
     url(r'^myfav/course/$', MyFavCourseView.as_view(), name='myfav_course'),
+    url(r'^mymessage/$', MyMessageView.as_view(), name='mymessage'),
 ]

@@ -12,13 +12,14 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import UserProfile,EmailVerifyRecord
+from .models import UserProfile,EmailVerifyRecord,Banner
 from .forms import LoginForm,RegisterForm,ForgetpwdForm,ModifypwdForm,UploadImageForm,UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
-from operation.models import UserCourse,UserFavorite
+from operation.models import UserCourse,UserFavorite,UserMessage
 from courses.models import Course
 from organization.models import CourseOrg,Teacher
+
 
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
@@ -48,6 +49,9 @@ class RegisterView(View):
             user_profile.password = make_password(pass_word)
             user_profile.is_active = False
             user_profile.save()
+
+            user_message = UserMessage(user=user_profile.id,message = u'{0}，欢迎你的注册'.format(user_name))
+            user_message.save()
 
             send_register_email(user_name,'register')
             return render(request,'register.html',{'msg':'激活链接已发送邮箱，请注意查收'})
@@ -151,8 +155,10 @@ class ModifypwdView(View):
 class UserInfoView(LoginRequiredMixin,View):
     def get(self,request):
         user = request.user
+        click_page = 'userinfo'
         return render(request,'usercenter-info.html',{
-            'user':user
+            'user':user,
+            'click_page':click_page
         })
 
     def post(self,request):
@@ -227,40 +233,95 @@ class UpdateEmailView(LoginRequiredMixin,View):
 class MyCoursesView(LoginRequiredMixin,View):
     def get(self,request):
         user_courses = UserCourse.objects.filter(user=request.user)
+        click_page = 'course'
         return render(request,'usercenter-mycourse.html',{
-            'user_courses':user_courses
+            'user_courses':user_courses,
+            'click_page':click_page
         })
 
 class MyFavOrgView(LoginRequiredMixin,View):
     def get(self,request):
+        click_page = 'myfav'
         orgs_list = []
         fav_orgs = UserFavorite.objects.filter(user=request.user,fav_type=2)
         for fav_org in fav_orgs:
             org_id = fav_org.fav_id
             org = CourseOrg.objects.get(id=int(org_id))
             orgs_list.append(org)
-        return render(request,'usercenter-fav-org.html',{'orgs_list':orgs_list})
+        return render(request,'usercenter-fav-org.html',{'orgs_list':orgs_list,'click_page':click_page})
 
 
 class MyFavTeacherView(LoginRequiredMixin,View):
     def get(self,request):
+        click_page = 'myfav'
         teachers_list = []
         fav_teachers = UserFavorite.objects.filter(user=request.user,fav_type=3)
         for fav_teacher in fav_teachers:
             teacher_id = fav_teacher.fav_id
             teacher = Teacher.objects.get(id=int(teacher_id))
             teachers_list.append(teacher)
-        return render(request,'usercenter-fav-teacher.html',{'teachers_list':teachers_list})
+        return render(request,'usercenter-fav-teacher.html',{'teachers_list':teachers_list,'click_page':click_page})
 
 
 class MyFavCourseView(LoginRequiredMixin,View):
     def get(self, request):
+        click_page = 'myfav'
         courses_list = []
         fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
         for fav_course in fav_courses:
             course_id = fav_course.fav_id
             course = Course.objects.get(id=int(course_id))
             courses_list.append(course)
-        return render(request, 'usercenter-fav-course.html', {'courses_list': courses_list})
+        return render(request, 'usercenter-fav-course.html', {'courses_list': courses_list,'click_page':click_page})
 
 
+class MyMessageView(LoginRequiredMixin,View):
+    def get(self,request):
+        all_messages = UserMessage.objects.filter(user=request.user.id)
+        click_page = 'message'
+
+        unread_messages = UserMessage.objects.filter(user=request.user.id,is_read=False)
+        for unread_message in unread_messages:
+            unread_message.is_read = True
+            unread_message.save()
+
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        p = Paginator(all_messages, 5,request=request)
+        messages = p.page(page)
+
+        return  render(request,'usercenter-message.html',{
+            'all_messages':messages,
+            'click_page': click_page
+        })
+
+
+class IndexView(View):
+    def get(self,request):
+        all_banners = Banner.objects.all().order_by('index')
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
+        courses = Course.objects.filter(is_banner=False)[:6]
+        orgs = CourseOrg.objects.all()
+        return render(request,'index.html',{
+            'all_banners':all_banners,
+            'banner_courses':banner_courses,
+            'courses':courses,
+            'orgs':orgs
+        })
+
+
+
+def page_404error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html',{})
+    response.status_code = 404
+    return response
+
+def page_500error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html',{})
+    response.status_code = 500
+    return response

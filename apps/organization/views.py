@@ -78,6 +78,9 @@ class OrgHomeView(View):
     def get(self,request,org_id):
         click_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
+        course_org.click_nums += 1
+        course_org.save()
+
         all_courses = course_org.course_set.all()[:4]
         all_teachers = course_org.teacher_set.all()[:2]
         has_fav = False
@@ -242,6 +245,9 @@ class TeacherListView(View):
 class TeacherDetailView(View):
     def get(self,request,teacher_id):
         teacher = Teacher.objects.get(id=int(teacher_id))
+        teacher.click_nums += 1
+        teacher.save()
+
         hot_teachers = Teacher.objects.all().order_by('-click_nums')[:3]
         teacher_courses = Course.objects.filter(teacher=teacher)
 

@@ -5,6 +5,7 @@ from django.db import models
 
 from organization.models import CourseOrg,Teacher
 
+
 # Create your models here.
 
 class Course(models.Model):
@@ -21,6 +22,7 @@ class Course(models.Model):
     click_nums = models.IntegerField(default=0,verbose_name=u'点击数')
     course_type = models.CharField(default='',max_length=50,verbose_name=u'课程类别')
     tag = models.CharField(default='',max_length=20,verbose_name=u'课程标签')
+    is_banner = models.BooleanField(default=False,verbose_name=u'是否轮播')
     add_time = models.DateTimeField(default=datetime.now,verbose_name=u'添加时间')
 
     class Meta:

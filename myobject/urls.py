@@ -21,11 +21,12 @@ from django.views.static import serve
 import xadmin
 
 from users import views
-from myobject.settings import MEDIA_ROOT
+from myobject.settings import MEDIA_ROOT,STATIC_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^$',TemplateView.as_view(template_name='index.html'),name='index'),
+    # url(r'^$',TemplateView.as_view(template_name='index.html'),name='index'),
+    url(r'^$',views.IndexView.as_view(),name='index'),
     url(r'^login/$',views.LoginView.as_view(),name='login'),
     url(r'^logout/$',views.LogoutView.as_view(),name='logout'),
     url(r'^register/$',views.RegisterView.as_view(),name='register'),
@@ -36,8 +37,12 @@ urlpatterns = [
     url(r'^modifypwd/$',views.ModifypwdView.as_view(),name='modify_pwd'),
 
     url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$',serve,{'document_root':STATIC_ROOT}),
 
     url(r'^org/', include('organization.urls',namespace='org')),
     url(r'^course/', include('courses.urls',namespace='course')),
     url(r'^user/', include('users.urls', namespace='user')),
 ]
+
+handler404 = 'users.views.page_404error'
+handler500 = 'users.views.page_500error'
