@@ -23,6 +23,7 @@ class EmailVerifyRecordAdmin(object):
     list_display = ['code','email','send_type','send_time']
     search_fields = ['code','email','send_type']
     list_filter = ['code','email','send_type','send_time']
+    model_icon = 'fas fa-at'
 
 class BannerAdmin(object):
     list_display = ['title', 'image', 'url', 'index','add_time']

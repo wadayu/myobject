@@ -21,7 +21,7 @@ from django.views.static import serve
 import xadmin
 
 from users import views
-from myobject.settings import MEDIA_ROOT,STATIC_ROOT
+from myobject.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^modifypwd/$',views.ModifypwdView.as_view(),name='modify_pwd'),
 
     url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$',serve,{'document_root':STATIC_ROOT}),
+    # url(r'^static/(?P<path>.*)$',serve,{'document_root':STATIC_ROOT}),
 
     url(r'^org/', include('organization.urls',namespace='org')),
     url(r'^course/', include('courses.urls',namespace='course')),
