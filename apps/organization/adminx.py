@@ -16,7 +16,7 @@ class CourseOrgAdmin(object):
     list_display = ['name', 'desc', 'category','click_nums','fav_nums','image','address','city','students','course_nums','add_time']
     search_fields = ['name', 'desc', 'category','click_nums','fav_nums','image','address','city__name','students']
     list_filter = ['name', 'desc', 'category','click_nums','fav_nums','image','address','city__name','students','add_time']
-
+    relfield_style = 'fk-ajax'  # 添加课程选择机构的时候，可以用搜索的模式
 
 class TeacherAdmin(object):
     list_display = ['name', 'org','age', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fav_nums','image','add_time']
