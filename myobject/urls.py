@@ -42,6 +42,8 @@ urlpatterns = [
     url(r'^org/', include('organization.urls',namespace='org')),
     url(r'^course/', include('courses.urls',namespace='course')),
     url(r'^user/', include('users.urls', namespace='user')),
+
+    url(r'^ueditor/',include('DjangoUeditor.urls' )),
 ]
 
 handler404 = 'users.views.page_404error'

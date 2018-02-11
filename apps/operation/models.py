@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from django.db import models
+from DjangoUeditor.models import UEditorField
 
 from users.models import UserProfile
 from courses.models import Course
@@ -26,12 +27,17 @@ class UserAsk(models.Model):
 class CousreComments(models.Model):
     user = models.ForeignKey(UserProfile,verbose_name=u'用户')
     course = models.ForeignKey(Course,verbose_name=u'课程')
-    comments = models.CharField(max_length=200,verbose_name=u'课程评论')
+    # comments = models.CharField(max_length=200,verbose_name=u'课程评论')
+    comments = UEditorField(verbose_name=u'课程评论', width=600, height=300, imagePath="usercommet/",
+                 filePath="usercommet/",default='')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     class Meta:
         verbose_name = u'课程评论'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '{0}({1})'.format(self.user,self.comments)
 
 
 class UserFavorite(models.Model):

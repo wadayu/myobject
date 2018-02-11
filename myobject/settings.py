@@ -50,7 +50,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'pure_pagination',
+    'DjangoUeditor',
     # 'import_export',
+
 
 ]
 

@@ -231,6 +231,6 @@ class BookmarkWidget(PartialBaseWidget):
         context['result_count'] = list_view.result_count
         context['page_url'] = self.bookmark.url
 
-site.register(Bookmark, BookmarkAdmin)
-site.register_plugin(BookmarkPlugin, ListAdminView)
-site.register_modelview(r'^bookmark/$', BookmarkView, name='%s_%s_bookmark')
+# site.register(Bookmark, BookmarkAdmin)
+# site.register_plugin(BookmarkPlugin, ListAdminView)
+# site.register_modelview(r'^bookmark/$', BookmarkView, name='%s_%s_bookmark')

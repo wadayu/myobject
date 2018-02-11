@@ -17,6 +17,7 @@ class CouCousreCommentsAdmin(object):
     list_display = ['user','course','comments','add_time']
     search_fields = ['user','course','comments']
     list_filter = ['user__username','course__name','comments','add_time']
+    style_fields = {"comments": "ueditor"}
 
 
 class UserFavoriteAdmin(object):

@@ -5,6 +5,7 @@ __date__ = '2018/1/25 9:50'
 import xadmin
 
 from .models import Course,Lesson,Video,CourseResource
+from organization.models import  CourseOrg
 
 
 class LessonInline(object):
@@ -31,6 +32,15 @@ class CourseAdmin(object):
     exclude = ['add_time']
     list_editable = ['name','degree']
     inlines = [LessonInline,CourseResourceInline]
+    style_fields = {"detail": "ueditor"}
+
+    def save_models(self):
+        obj = self.new_obj
+        obj.save()
+        if obj.course_org:
+            course_org = obj.course_org
+            course_org.course_nums = Course.objects.filter(course_org=course_org).count()
+            course_org.save()
 
 class LessonAdmin(object):
     list_display = ['name','course','add_time']

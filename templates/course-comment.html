@@ -72,7 +72,9 @@
                                     <div class="tit">
                                         <span target="_blank">{{ comment.user.username }}</span>
                                     </div>
-                                    <p class="cnt">{{ comment.comments }}</p>
+                                        {% autoescape off %}
+                                        <p class="cnt">{{ comment.comments }}</p>
+                                        {% endautoescape %}
                                     <div class="footer clearfix">
                                         <span title="创建时间" class="l timeago">时间：{{ comment.add_time }}</span>
                                     </div>
