@@ -314,6 +314,8 @@ class IndexView(View):
 
 
 
+
+
 def page_404error(request):
     from django.shortcuts import render_to_response
     response = render_to_response('404.html',{})

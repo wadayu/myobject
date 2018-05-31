@@ -26,6 +26,7 @@
       <sourceFolder url="file://$MODULE_DIR$/extra_apps/DjangoUeditor" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/apps/utils" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/media" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/apps/asset" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

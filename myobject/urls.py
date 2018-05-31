@@ -44,6 +44,9 @@ urlpatterns = [
     url(r'^user/', include('users.urls', namespace='user')),
 
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
+
+    # 资产收集测试
+    url(r'^asset/', include('asset.urls', namespace='asset')),
 ]
 
 handler404 = 'users.views.page_404error'
