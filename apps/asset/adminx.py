@@ -9,9 +9,9 @@ from .models import Asset
 
 
 class AssetAdmin(object):
-    list_display = ['hostname','ipaddress','macaddress','memory','manufacturer','machinemodel']
-    search_fields = ['hostname','ipaddress','macaddress','memory','manufacturer','machinemodel']
-    list_filter = ['hostname','ipaddress','macaddress','memory','manufacturer','machinemodel']
+    list_display = ['hostname','ipaddress','macaddress','memory','manufacturer','machinemodel','is_production']
+    search_fields = ['hostname','ipaddress','macaddress','memory','manufacturer','machinemodel','is_production']
+    list_filter = ['hostname','ipaddress','macaddress','memory','manufacturer','machinemodel','is_production']
 
 
 xadmin.site.register(Asset,AssetAdmin)

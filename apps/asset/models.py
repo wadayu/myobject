@@ -12,7 +12,7 @@ class Asset(models.Model):
     macaddress = models.CharField(max_length=50,verbose_name=u'MAC地址',default='')
     manufacturer = models.CharField(max_length=50,verbose_name=u'生产厂家')
     machinemodel = models.CharField(max_length=50,verbose_name=u'机器型号',default='')
-
+    is_production = models.CharField(max_length=20,choices=(('test',u'测试'),('production',u'生产')),default='test',verbose_name=u'是否生产')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
 
