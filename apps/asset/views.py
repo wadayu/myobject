@@ -8,13 +8,19 @@ from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from django.forms.models import model_to_dict
 
 from .models import Asset
 
 # Create your views here.
+
+# requests方法
+
 class AssetInfo(View):
     def post(self,request):
-        data = eval(request.body.decode('utf-8'))
+        data = dict()
+        for k,v in request.POST.items():
+            data[k] = v
         asset = Asset.objects.filter(ipaddress=data.get('ipaddress'))
         if not asset:
             asset = Asset.objects.create(**data)
@@ -22,6 +28,54 @@ class AssetInfo(View):
             asset = Asset.objects.filter(ipaddress=data.get('ipaddress')).update(**data)
 
         return render(request, 'result.html')
+
+#客户端 requests
+# #/usr/bin/python
+#
+# import json,subprocess
+# import requests
+#
+# mem = int(subprocess.getoutput('free -m').split('Mem:')[1].strip().split(' ')[0]) / 1024
+# hostname = subprocess.getoutput('hostname')
+# ipadd = subprocess.getoutput('ifconfig eth1').split('\n')[1].split('addr:')[1].split(' ')[0]
+# mft = subprocess.getoutput('dmidecode -s system-manufacturer')
+# model = subprocess.getoutput('dmidecode -s system-product-name')
+# macadd = subprocess.getoutput('ifconfig eth1').split('HWaddr')[1].split('\n')[0]
+#
+# url = 'http://192.168.1.100:8000/asset/info/'
+# data = {
+# 	'memory': '%.2f' %mem,
+# 	'hostname': hostname,
+# 	'ipaddress': ipadd,
+# 	'manufacturer':mft,
+# 	'machinemodel':model,
+# 	'macaddress':macadd
+#     }
+# #headers = {'Content-Type': 'application/json'}
+# headers = {
+#     #伪装一个火狐浏览器
+#     "User-Agent":'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)',
+#     "host":'httpbin.org'
+# }
+#
+# response = requests.post(url,data=data,headers=headers)
+# print (response.text)
+
+
+
+
+# urllib.request方法
+
+# class AssetInfo(View):
+#     def post(self,request):
+#         data = eval(request.body.decode('utf-8'))
+#         asset = Asset.objects.filter(ipaddress=data.get('ipaddress'))
+#         if not asset:
+#             asset = Asset.objects.create(**data)
+#         else:
+#             asset = Asset.objects.filter(ipaddress=data.get('ipaddress')).update(**data)
+#
+#         return render(request, 'result.html')
 
 
 # 后端资产扫描推送服务端
