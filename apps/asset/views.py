@@ -18,9 +18,7 @@ from .models import Asset
 
 class AssetInfo(View):
     def post(self,request):
-        data = dict()
-        for k,v in request.POST.items():
-            data[k] = v
+        data = request.POST.dict()
         asset = Asset.objects.filter(ipaddress=data.get('ipaddress'))
         if not asset:
             asset = Asset.objects.create(**data)
