@@ -153,7 +153,7 @@ STATICFILES_DIRS = [
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'wadayu@163.com'
-EMAIL_HOST_PASSWORD = 'WDY*1990'
+EMAIL_HOST_PASSWORD = 'qwerqfasdf'
 EMAIL_FROM = 'wadayu@163.com'
 
 MEDIA_URL = '/media/'
